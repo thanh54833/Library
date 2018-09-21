@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         //    textView.append(new String(Files.readFile(fileread)));
         //}
 
-        Toast.makeText(getApplicationContext(),"result :"+Files.delete(null),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"result :"+Files.delete(fileread),Toast.LENGTH_SHORT).show();
 
 
 
