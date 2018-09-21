@@ -58,7 +58,18 @@ public class Files {
     }
 
     public static boolean wirteFile(File path, byte[] buffer){
-        if(!path.exists()||buffer==null){
+        File parent=new File(path.getParent());
+        if(!parent.exists())
+        {
+            parent.mkdirs();
+            if(BuildConfig.DEBUG){
+                Util.messageDisplay("Read file error : Create parent file "+parent);
+            }
+        }
+        if(buffer==null){
+            if(BuildConfig.DEBUG){
+                Util.messageDisplay("Read file error : message null");
+            }
             return false;
         }
         FileOutputStream fos=null;
@@ -74,5 +85,11 @@ public class Files {
             return false;
         }
     }
-    
+
+    public static void delete(File path){
+
+
+
+    }
+
 }
