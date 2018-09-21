@@ -11,7 +11,7 @@ import java.io.InputStream;
 public class Files {
 
     public static byte[] readFile(File path)  {
-        if(!path.exists()){
+        if(!path.exists()||path==null){
             if(BuildConfig.DEBUG){
                 Util.messageDisplay("Read file error : file no exists");
             }
@@ -63,12 +63,12 @@ public class Files {
         {
             parent.mkdirs();
             if(BuildConfig.DEBUG){
-                Util.messageDisplay("Read file error : Create parent file "+parent);
+                Util.messageDisplay("Write file error : Create parent file "+parent);
             }
         }
-        if(buffer==null){
+        if(buffer==null||path==null){
             if(BuildConfig.DEBUG){
-                Util.messageDisplay("Read file error : message null");
+                Util.messageDisplay("Write file error : message null");
             }
             return false;
         }
@@ -80,16 +80,35 @@ public class Files {
             return true;
         } catch (IOException e) {
             if(BuildConfig.DEBUG){
-                Util.messageDisplay("Read file error :"+e.getMessage());
+                Util.messageDisplay("Write file error :"+e.getMessage());
             }
             return false;
         }
     }
 
-    public static void delete(File path){
-
-
-
+    public static boolean delete(File path){
+        if(!path.exists()||path==null){
+            if(BuildConfig.DEBUG){
+                Util.messageDisplay("delete file error : path no exists ");
+            }
+            return false;
+        }
+        if (path.isDirectory()) {
+            for (File f : path.listFiles()) {
+                delete(f);
+            }
+            return true;
+        } else {
+            path.delete();
+            return true;
+        }
     }
+
+
+
+
+
+
+
 
 }
