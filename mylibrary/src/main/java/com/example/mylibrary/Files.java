@@ -178,13 +178,15 @@ public class Files {
                     if (BuildConfig.DEBUG) {
                         Util.messageDisplay("Zip file error : file no exists" );
                     }
-                    return false;
+                    continue;
                 }
+
                 if (folder.isDirectory()) {
                     zipDirectory("", folder, zip);
                 } else {
                     zipFile("",folder,zip);
                 }
+
             }
             zip.flush();
             zip.close();

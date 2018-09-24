@@ -47,17 +47,14 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(),"result :"+Files.zip(filezip,new File(extStore+"/zip")),Toast.LENGTH_SHORT).show();
 
         File [] array=new File[3];
-        array[0]=new File(extStore+"/test");
-        array[1]=new File(extStore+"/data");
+        array[0]=null;
+        array[1]=new File(extStore+"/datathanh");
         array[2]=new File(extStore+"/thanh.txt");
-
         try {
-
             Files.zip(array,new File(extStore+"/zip.zip"));
             if(BuildConfig.DEBUG){
                 Util.messageDisplay("++ true");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(),"false ! -- "+e.getMessage(),Toast.LENGTH_SHORT).show();
@@ -65,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
                 Util.messageDisplay("++"+e.getMessage());
             }
         }
+
+
+
+        
     }
 
 
