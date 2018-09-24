@@ -1,7 +1,5 @@
 package com.example.mylibrary;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -110,7 +108,7 @@ public class Files {
 
 
     public static boolean copy(File sourceLocation, File targetLocation) {
-        if(sourceLocation==null||targetLocation==null||!sourceLocation.exists()){
+        if (sourceLocation == null || targetLocation == null || !sourceLocation.exists()) {
             if (BuildConfig.DEBUG) {
                 Util.messageDisplay("Coppy file error : file no exists");
             }
@@ -133,7 +131,7 @@ public class Files {
     public static boolean copyFile(File sourceLocation, File targetLocation) {
 
         InputStream in = null;
-        OutputStream out=null;
+        OutputStream out = null;
         try {
             in = new FileInputStream(sourceLocation);
             out = new FileOutputStream(targetLocation);
@@ -149,121 +147,96 @@ public class Files {
             return true;
         } catch (FileNotFoundException e) {
             if (BuildConfig.DEBUG) {
-                Util.messageDisplay("Coppy file error :"+e.getMessage());
+                Util.messageDisplay("Coppy file error :" + e.getMessage());
             }
             return false;
         } catch (IOException e) {
             if (BuildConfig.DEBUG) {
-                Util.messageDisplay("Coppy file error :"+e.getMessage());
+                Util.messageDisplay("Coppy file error :" + e.getMessage());
             }
             return false;
         }
     }
 
-    public static boolean zip(File[] sourceLocation, File targetLocation) {
 
-        if(sourceLocation==null||targetLocation==null){
+    public static boolean zip(File[] srcFolder, File destZipFile) {
+        if(srcFolder==null||destZipFile==null){
             if (BuildConfig.DEBUG) {
-                Util.messageDisplay("Zip file error : file no exists");
+                Util.messageDisplay("Zip file error : file no exists" );
             }
             return false;
         }
+        ZipOutputStream zip = null;
+        FileOutputStream fileWriter = null;
         try {
-            BufferedInputStream origin = null;
-            FileOutputStream dest = new FileOutputStream(targetLocation);
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
-            byte data[] = new byte[1024];
+            fileWriter = new FileOutputStream(destZipFile);
+            zip = new ZipOutputStream(fileWriter);
+            for (File folder : srcFolder) {
 
-            for (int i = 0; i < sourceLocation.length; i++) {
-
-                if(sourceLocation[i]==null||!sourceLocation[i].exists()){
+                if(folder==null||!folder.exists())
+                {
                     if (BuildConfig.DEBUG) {
-                        Util.messageDisplay("Zip file error : file no exists");
+                        Util.messageDisplay("Zip file error : file no exists" );
                     }
                     return false;
                 }
-                if(sourceLocation[i].isFile())
-                {
-                    FileInputStream fi = new FileInputStream(sourceLocation[i]);
-                    origin = new BufferedInputStream(fi, 1024);
-                    ZipEntry entry = new ZipEntry(sourceLocation[i].getName());
-
-                    out.putNextEntry(entry);
-                    int count;
-                    while ((count = origin.read(data, 0, 1024)) != -1) {
-                        out.write(data, 0, count);
-                    }
-
+                if (folder.isDirectory()) {
+                    zipDirectory("", folder, zip);
+                } else {
+                    zipFile("",folder,zip);
                 }
-
-                origin.close();
-
             }
-            out.close();
+            zip.flush();
+            zip.close();
             return true;
-
-        } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                Util.messageDisplay("Zip file error :"+e.getMessage());
-            }
-            return false;
-        }
-    }
-
-
-
-    public static boolean zipDir(File zipFileName, File dir){
-
-        File dirObj = new File(String.valueOf(dir));
-        ZipOutputStream out = null;
-        try {
-
-            out = new ZipOutputStream(new FileOutputStream(zipFileName));
-            System.out.println("Creating : " + zipFileName);
-            addDir(dirObj, out);
-            out.close();
-            return true;
-
         } catch (FileNotFoundException e) {
             if (BuildConfig.DEBUG) {
-                Util.messageDisplay("Zip file error :"+e.getMessage());
+                Util.messageDisplay("Zip file error : "+e.getMessage() );
             }
             return false;
         } catch (IOException e) {
             if (BuildConfig.DEBUG) {
-                Util.messageDisplay("Zip file error :"+e.getMessage());
+                Util.messageDisplay("Zip file error : "+e.getMessage() );
+            }
+            return false;
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Zip file error : "+e.getMessage() );
             }
             return false;
         }
     }
 
-    static void addDir(File dirObj, ZipOutputStream out)  {
-        File[] files = dirObj.listFiles();
-        byte[] tmpBuf = new byte[1024];
-
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory()) {
-                addDir(files[i], out);
-                continue;
+    private static void zipDirectory(String path, File srcFolder, ZipOutputStream zip) throws Exception {
+        for (String fileName : srcFolder.list()) {
+            if (path.equals("")) {
+                addFileToZip(srcFolder.getName(), new File(srcFolder + "/" + fileName), zip);
+            } else {
+                addFileToZip(path + "/" + srcFolder.getName(), new File(srcFolder + "/" + fileName), zip);
             }
-            FileInputStream in = null;
-            try {
-                in = new FileInputStream(files[i].getAbsolutePath());
-                System.out.println(" Adding: " + files[i].getAbsolutePath());
-                out.putNextEntry(new ZipEntry(files[i].getAbsolutePath()));
-                int len;
-                while ((len = in.read(tmpBuf)) > 0) {
-                    out.write(tmpBuf, 0, len);
-                }
-                out.closeEntry();
-                in.close();
+        }
+    }
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    private static void zipFile(String path, File srcFile, ZipOutputStream zip) throws Exception {
+        byte[] buf = new byte[1024];
+        int len;
+        FileInputStream in = new FileInputStream(srcFile);
+        if(path.equals("")){
+            zip.putNextEntry(new ZipEntry(srcFile.getName()));
+        }
+        else {
+            zip.putNextEntry(new ZipEntry(path + "/" + srcFile.getName()));
+        }
+        while ((len = in.read(buf)) > 0) {
+            zip.write(buf, 0, len);
+        }
+    }
 
+    private static void addFileToZip(String path, File srcFile, ZipOutputStream zip) throws Exception {
+        if (srcFile.isDirectory()) {
+            zipDirectory(path, srcFile, zip);
+        } else {
+            zipFile(path,srcFile,zip);
         }
     }
 
