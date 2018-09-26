@@ -1,17 +1,25 @@
 package com.example.mylibrary;
 
+import android.os.Environment;
+
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class Files {
+
+
 
     public static byte[] readFile(File sourceLocation) {
         if (sourceLocation == null || !sourceLocation.exists()) {
@@ -159,8 +167,8 @@ public class Files {
     }
 
 
-    public static boolean zip(File[] srcFolder, File destZipFile) {
-        if(srcFolder==null||destZipFile==null){
+    public static boolean zip(File[] sourceLocation, File targetLocation) {
+        if(sourceLocation==null||targetLocation==null){
             if (BuildConfig.DEBUG) {
                 Util.messageDisplay("Zip file error : file no exists" );
             }
@@ -169,9 +177,9 @@ public class Files {
         ZipOutputStream zip = null;
         FileOutputStream fileWriter = null;
         try {
-            fileWriter = new FileOutputStream(destZipFile);
+            fileWriter = new FileOutputStream(targetLocation);
             zip = new ZipOutputStream(fileWriter);
-            for (File folder : srcFolder) {
+            for (File folder : sourceLocation) {
 
                 if(folder==null||!folder.exists())
                 {
@@ -243,6 +251,103 @@ public class Files {
     }
 
 
+    public static boolean unZip(File sourceLocation, File targetDirectory)  {
+
+        if(sourceLocation==null||targetDirectory==null||!sourceLocation.exists()){
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Zip file error : file or directory no exists");
+            }
+        }
+        ZipInputStream zis =null;
+        try {
+            zis=new ZipInputStream(new BufferedInputStream(new FileInputStream(sourceLocation)));
+            ZipEntry ze;
+            int count;
+            byte[] buffer = new byte[8192];
+            while ((ze = zis.getNextEntry()) != null) {
+                File file = new File(targetDirectory, ze.getName());
+                File dir = ze.isDirectory() ? file : file.getParentFile();
+                if (!dir.isDirectory() && !dir.mkdirs())
+                {
+                    if (BuildConfig.DEBUG) {
+                        Util.messageDisplay("Zip file error : file or directory no exists");
+                    }
+                }
+                if (ze.isDirectory())
+                {
+                    continue;
+                }
+                FileOutputStream fout = new FileOutputStream(file);
+                try {
+                    while ((count = zis.read(buffer)) != -1)
+                    {
+                        fout.write(buffer, 0, count);
+                    }
+
+                } finally {
+                    fout.close();
+                }
+            }
+            zis.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Zip file error : "+e.getMessage() );
+            }
+            return false;
+        } catch (IOException e) {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Zip file error : "+e.getMessage() );
+            }
+            return false;
+        }
+
+    }
 
 
+    public static ArrayList<File> find(File sourceLocation, String fileName, String extention){
+
+        if(sourceLocation==null||!sourceLocation.exists()||fileName==null||extention==null){
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Find file error : file or directory no exists");
+            }
+            return null;
+        }
+        else
+        {
+            ArrayList<File> value=new ArrayList<>();
+            return  findFile(sourceLocation,fileName,extention,value);
+        }
+    }
+
+    private static ArrayList<File> findFile(File sourceLocation, String fileName, String extention,ArrayList<File> value){
+        for(File files:Files.finder(sourceLocation,fileName,extention)){
+            value.add(files);
+        }
+        for( File file:sourceLocation.listFiles())
+        {
+            if(file.isDirectory()){
+                findFile(file,fileName,extention,value);
+            }
+        }
+       return value;
+    }
+    private static File[] finder(File file, final String fileName, final String extention){
+        return file.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String filename)
+            {
+                if(filename.indexOf(fileName)>=0&&filename.endsWith(extention))
+                {
+                    if(BuildConfig.DEBUG){
+                        Util.messageDisplay("---"+filename+"--"+filename.indexOf("text"));
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        });
+    }
 }

@@ -11,6 +11,12 @@ import com.example.mylibrary.Files;
 import com.example.mylibrary.Util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,27 +52,44 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(),"result :"+Files.zip(filezip,new File(extStore+"/zip")),Toast.LENGTH_SHORT).show();
         //Toast.makeText(getApplicationContext(),"result :"+Files.zip(filezip,new File(extStore+"/zip")),Toast.LENGTH_SHORT).show();
 
-        File [] array=new File[3];
-        array[0]=null;
-        array[1]=new File(extStore+"/datathanh");
+        /*File [] array=new File[3];
+        array[0]=new File(extStore+"/test");
+        array[1]=new File(extStore+"/data");
         array[2]=new File(extStore+"/thanh.txt");
-        try {
-            Files.zip(array,new File(extStore+"/zip.zip"));
-            if(BuildConfig.DEBUG){
-                Util.messageDisplay("++ true");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(),"false ! -- "+e.getMessage(),Toast.LENGTH_SHORT).show();
-            if(BuildConfig.DEBUG){
-                Util.messageDisplay("++"+e.getMessage());
-            }
+
+        Files.zip(array,new File(extStore+"/zip.zip"));
+
+        if(BuildConfig.DEBUG){
+            Util.messageDisplay("++ true"); }
+
+        if(BuildConfig.DEBUG){
+           if(Files.unZip(new File(extStore+"/zip.zip"),new File(extStore+"/zip123"))){
+               Toast.makeText(getApplicationContext(),"true !",Toast.LENGTH_SHORT).show();
+           }
+           else
+           {
+               Toast.makeText(getApplicationContext(),"false !",Toast.LENGTH_SHORT).show();
+           }
+        }*/
+
+        /*File dir=Environment.getExternalStorageDirectory();
+        for(File file:Files.finder(dir,"thanh",".txt")){
+            textView.append("+++"+String.valueOf(file));
+        }*/
+
+        File dir=Environment.getExternalStorageDirectory();
+        textView.setText(null);
+
+        for(File file:Files.find(dir,"text",".doc"))
+        {
+            textView.append(String.valueOf(file)+"\n");
         }
 
 
 
-        
     }
+
+
 
 
 
