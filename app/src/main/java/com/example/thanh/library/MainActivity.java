@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mylibrary.Cipher;
 import com.example.mylibrary.Files;
 import com.example.mylibrary.Util;
 
@@ -77,20 +78,22 @@ public class MainActivity extends AppCompatActivity {
             textView.append("+++"+String.valueOf(file));
         }*/
 
-        File dir=Environment.getExternalStorageDirectory();
+        /*File dir=Environment.getExternalStorageDirectory();
         textView.setText(null);
 
         for(File file:Files.find(dir,"text",".doc"))
         {
             textView.append(String.valueOf(file)+"\n");
-        }
+        }*/
+
+        File dir=new File(Environment.getExternalStorageDirectory()+"/text1.doc");
+
+        byte[] buffer="thanh".getBytes();
+
+        textView.append("result :"+Cipher.hexToString(Cipher.sha(buffer)));
+
 
 
 
     }
-
-
-
-
-
 }
