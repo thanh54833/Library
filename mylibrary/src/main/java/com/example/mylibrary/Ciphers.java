@@ -187,33 +187,78 @@ public class Ciphers {
         }
         return empty;
     }
-
-    public static byte[] XOR(byte[] buffer){
-        if(buffer==null) {
+    public static byte[] XOR(byte[] buffer,byte[] key){
+        if(buffer==null||key==null) {
             if(BuildConfig.DEBUG){
-                Util.messageDisplay("Cipper NOT  error : buffer by null");
+                Util.messageDisplay("Cipper XOR  error : buffer and key by null");
             }
         }
         byte[] empty = new byte[buffer.length];
+        int recoder=0;
         for (int i = 0; i<empty.length; i++) {
-            empty[i]= (byte)~buffer[i];
+            empty[i]= (byte)(buffer[i]^key[recoder]);
+            recoder++;
+            if(recoder==key.length)
+            {
+                recoder=0;
+            }
         }
         return empty;
     }
 
-    /*
-     public static byte[] encrypt(byte[] input, int cipherKey) {
-        checkCipherNotZero(cipherKey);
-        byte[] output = input.clone();
 
-        for (int i = 0; i <= output.length - BYTES_PER_INT; ++i) {
-            writeInt(output, i, readInt(output, i) + cipherKey);
+    public static class Shift {
+
+        public static byte[] encrypt(byte[] buffer, byte[] secret)
+        {
+            if(buffer==null||secret==null) {
+                if(BuildConfig.DEBUG){
+                    Util.messageDisplay("Cipper XOR  error : buffer by null");
+                }
+            }
+            byte[] empty = new byte[buffer.length];
+            int recoder=0;
+            for (int i = 0; i<empty.length; i++) {
+                empty[i]= rotateLeft(buffer[i],secret[recoder]%8);
+                recoder++;
+                if(recoder==secret.length)
+                {
+                    recoder=0;
+                }
+            }
+            return empty;
+        }
+        public static byte[] decrypt(byte[] buffer, byte[] secret)
+        {
+            if(buffer==null||secret==null) {
+                if(BuildConfig.DEBUG){
+                    Util.messageDisplay("Cipper XOR  error : buffer by null");
+                }
+            }
+            byte[] empty = new byte[buffer.length];
+            int recoder=0;
+            for (int i = 0; i<empty.length; i++) {
+                empty[i]= rotateRight(buffer[i],secret[recoder]%8);
+                recoder++;
+                if(recoder==secret.length)
+                {
+                    recoder=0;
+                }
+            }
+            return empty;
         }
 
-        return output;
-    }*/
+        private static byte rotateRight(byte bits, int shift)
+        {
+            return (byte)(((bits & 0xff)  >>> shift) | ((bits & 0xff) << (8 - shift)));
+        }
 
-    
+        private static byte rotateLeft(byte bits, int shift)
+        {
+            return (byte)(((bits & 0xff) << shift) | ((bits & 0xff) >>> (8 - shift)));
+        }
+
+    }
 
 
     public static String hexToString(byte[] messageDigest){

@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mylibrary.Cipher;
+import com.example.mylibrary.Ciphers;
 import com.example.mylibrary.Files;
 import com.example.mylibrary.Util;
 
@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -86,13 +87,24 @@ public class MainActivity extends AppCompatActivity {
             textView.append(String.valueOf(file)+"\n");
         }*/
 
-        File dir=new File(Environment.getExternalStorageDirectory()+"/text1.doc");
 
-        byte[] buffer="thanh".getBytes();
+        File dir=new File(Environment.getExternalStorageDirectory()+"/thanhthanh.txt");
+        /*byte[] buffer="thanh".getBytes();
+        textView.append("result :"+Ciphers.hexToString(Ciphers.sha(buffer)));*/
 
-        textView.append("result :"+Cipher.hexToString(Cipher.sha(buffer)));
+        //textView.append(new String(Ciphers.DES.decrypt(Ciphers.DES.encrypt(Files.readFile(dir),"11111111".getBytes()),"11111111".getBytes())));
 
 
+        //textView.append(new String(Files.readFile(dir)));
+        byte[] test="thanh".getBytes();
+        //textView.append("result : "+new String(Ciphers.XOR(Ciphers.XOR(test,"thanh".getBytes()),"thanh".getBytes())));
+
+        //textView.append("result :"+new String(Ciphers.Shift.decrypt(Ciphers.Shift.encrypt(test,"thanh".getBytes()),"thanh".getBytes())));
+
+        //byte t= Byte.parseByte("t");
+
+
+        //textView.append("\n result :"+String.valueOf(t));
 
 
     }
