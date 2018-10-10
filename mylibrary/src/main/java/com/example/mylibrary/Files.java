@@ -19,8 +19,6 @@ import java.util.zip.ZipOutputStream;
 
 public class Files {
 
-
-
     public static byte[] readFile(File sourceLocation) {
         if (sourceLocation == null || !sourceLocation.exists()) {
             if (BuildConfig.DEBUG) {

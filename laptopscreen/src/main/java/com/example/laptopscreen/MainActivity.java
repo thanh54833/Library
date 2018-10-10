@@ -93,10 +93,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -198,13 +194,12 @@ public class MainActivity extends AppCompatActivity {
                 String url="Html.html";
                 String responseNew=ReadFromfile(url, getApplicationContext());
                 os.print("HTTP/1.0 200" + "\r\n");
-                os.print("Content type: text/html" + "\r\n");
+                os.print("Content-Type: text/html; charset=utf-8" + "\r\n");
                 os.print("Content length: " + responseNew.length() + "\r\n");
                 os.print("\r\n");
                 os.print(responseNew + "\r\n");
 
                 os.flush();
-
                 socket.close();
 
                 msgLog += "Request of " + request + " from " + socket.getInetAddress().toString() + "\n";
