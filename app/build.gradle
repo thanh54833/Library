@@ -5,6 +5,7 @@ android {
     defaultConfig {
         applicationId "com.example.thanh.library"
         minSdkVersion 22
+        //noinspection ExpiringTargetSdkVersion
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -12,8 +13,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            //minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_DEBUG", "false"
         }
     }
 }

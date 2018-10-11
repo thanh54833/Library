@@ -1,48 +1,167 @@
 package com.example.mylibrary;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class Converter {
 
-    private ByteArrayInputStream bInput=null;
+    private ByteArrayInputStream bInput = null;
 
-    public Converter(byte[] buffer){
-        bInput=new ByteArrayInputStream(buffer);
-    }
-    public  short byteToShort(byte[] value) {
+    public Converter(byte[] buffer) {
 
-        return ByteBuffer.wrap(value).getShort();
-    }
-    public  int byteToInterger(byte[] value) {
+        bInput = new ByteArrayInputStream(buffer);
 
-        return ByteBuffer.wrap(value).getInt();
     }
-    public  long byteToLong(byte[] value) {
 
-        return ByteBuffer.wrap(value).getLong();
-    }
-    public static double byteToDouble(byte[] value) {
+    public short byteToShort() {
+        byte[] buffer = new byte[2];
+        try {
+            while (bInput.read(buffer) < buffer.length) {
 
-        return ByteBuffer.wrap(value).getDouble();
+            }
+        } catch (IOException e) {
+
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Byte to short error :" + e.getMessage());
+            }
+        } finally {
+            if (bInput != null) {
+                bInput.mark(0);
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Byte to short error : bInput byte null");
+                }
+            }
+        }
+        return ByteBuffer.wrap(buffer).getShort();
     }
-    public  String byteToString(byte[] value) {
-        int length=byteToInterger(value);
-        byte[] buffer=new byte[value.length-4];
-        for(int i = 0; i<length; i++ ){
-            buffer[i]=value[i+4];
+
+    public int byteToInterger() {
+        byte[] buffer = new byte[4];
+        try {
+            while (bInput.read(buffer) < buffer.length) {
+            }
+        } catch (IOException e) {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Byte to int error :" + e.getMessage());
+            }
+        } finally {
+            if (bInput != null) {
+                bInput.mark(0);
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Byte to int error : bInput byte null");
+                }
+            }
+        }
+        return ByteBuffer.wrap(buffer).getInt();
+    }
+
+    public long byteToLong() {
+        byte[] buffer = new byte[8];
+        try {
+            while (bInput.read(buffer) < buffer.length) {
+            }
+        } catch (IOException e) {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Byte to long error :" + e.getMessage());
+            }
+        } finally {
+            if (bInput != null) {
+                bInput.mark(0);
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Byte to long error : bInput byte null");
+                }
+            }
+        }
+        return ByteBuffer.wrap(buffer).getLong();
+    }
+
+    public double byteToDouble() {
+        byte[] buffer = new byte[8];
+        try {
+            while (bInput.read(buffer) < buffer.length) {
+            }
+        } catch (IOException e) {
+            if (BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Byte to double error :" + e.getMessage());
+                }
+            }
+        } finally {
+            if (bInput != null) {
+                bInput.mark(0);
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Byte to double error : bInput byte null");
+                }
+            }
+        }
+        return ByteBuffer.wrap(buffer).getDouble();
+    }
+
+    public String byteToString() {
+        int length = byteToInterger();
+        byte[] buffer = new byte[length];
+        try {
+            while (bInput.read(buffer) < buffer.length) {
+            }
+        } catch (IOException e) {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Byte to string error :" + e.getMessage());
+            }
+        } finally {
+            if (bInput != null) {
+                bInput.mark(0);
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Byte to string error : bInput byte null");
+                }
+            }
         }
         return new String(buffer);
     }
-    public  byte[] byteToByte(byte[] value) {
-        int length=byteToInterger(value);
-        byte[] buffer=new byte[value.length-4];
-        for(int i = 0; i<length; i++ ){
-            buffer[i]=value[i+4];
+
+    public byte[] byteToByte() {
+        int length = byteToInterger();
+        byte[] buffer = new byte[length];
+        try {
+            while (bInput.read(buffer) < buffer.length) {
+            }
+        } catch (IOException e) {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Byte to byte error :" + e.getMessage());
+            }
+        } finally {
+            if (bInput != null) {
+                bInput.mark(0);
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Byte to byte error : bInput byte null");
+                }
+            }
         }
         return buffer;
     }
 
+
+    public void Close() {
+        if (bInput != null) {
+            try {
+                bInput.close();
+            } catch (IOException e) {
+                if (BuildConfig.DEBUG) {
+                    Util.messageDisplay("Converter error : " + e.getMessage());
+                }
+            }
+        } else {
+            if (BuildConfig.DEBUG) {
+                Util.messageDisplay("Converter error : bInput byte null");
+            }
+        }
+    }
 
 
 }
