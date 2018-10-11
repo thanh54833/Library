@@ -17,11 +17,11 @@ public class DownloadUrl {
     public static void downloadFile(String fileURL, String saveDir)
             throws IOException {
         URL url = new URL(fileURL);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        int responseCode = httpConn.getResponseCode();
+        URLConnection httpConn = (URLConnection) url.openConnection();
+        //int responseCode = httpConn.getResponseCode();
 
         if(BuildConfig.DEBUG){
-           // Util.messageDisplay("Download url connection error : "+responseCode);
+            Util.messageDisplay("Download url connection error : "+httpConn.getContentType());
         }
 
         // always check HTTP response code first

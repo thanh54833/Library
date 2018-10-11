@@ -50,7 +50,12 @@ public class Parses {
 
     public byte[] getBuffer()
     {
-        return bos.toByteArray();
+        if(bos!=null){
+            return bos.toByteArray();
+        }
+        else {
+            return null;
+        }
     }
 
     public boolean Close(){
