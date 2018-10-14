@@ -1,77 +1,59 @@
 package com.example.mylibrary;
 
-import android.os.Environment;
-
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class DownloadUrl {
 
-    private static final int BUFFER_SIZE = 4096;
-    public static void downloadFile(String fileURL, String saveDir)
-            throws IOException {
-        URL url = new URL(fileURL);
-        URLConnection httpConn = (URLConnection) url.openConnection();
-        //int responseCode = httpConn.getResponseCode();
+    public static int proscess;
+    public static void urlConnection(String url, File file){
 
-        if(BuildConfig.DEBUG){
-            Util.messageDisplay("Download url connection error : "+httpConn.getContentType());
-        }
-
-        // always check HTTP response code first
-        /*if (responseCode == HttpURLConnection.HTTP_OK) {
-            String fileName = "";
-            String disposition = httpConn.getHeaderField("Content-Disposition");
-            String contentType = httpConn.getContentType();
-            int contentLength = httpConn.getContentLength();
-
-            if (disposition != null) {
-                // extracts file name from header field
-                int index = disposition.indexOf("filename=");
-                if (index > 0) {
-                    fileName = disposition.substring(index + 10,
-                            disposition.length() - 1);
-                }
-            } else {
-                // extracts file name from URL
-                fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1,
-                        fileURL.length());
+        if(url==null||file==null){
+            if(BuildConfig.DEBUG){
+                Util.messageDisplay("Download UrlConnection error : Url or file by null");
             }
-
-            System.out.println("Content-Type = " + contentType);
-            System.out.println("Content-Disposition = " + disposition);
-            System.out.println("Content-Length = " + contentLength);
-            System.out.println("fileName = " + fileName);
-
-            // opens input stream from the HTTP connection
-            InputStream inputStream = httpConn.getInputStream();
-            String saveFilePath = saveDir + File.separator + fileName;
-
-            // opens an output stream to save into file
-            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
-
-            int bytesRead = -1;
-            byte[] buffer = new byte[BUFFER_SIZE];
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-
-            outputStream.close();
-            inputStream.close();
-
-            System.out.println("File downloaded");
-        } else {
-            System.out.println("No file to download. Server replied HTTP code: " + responseCode);
         }
-        httpConn.disconnect();*/
+        try {
+
+            URL urls = new URL(url);
+            String fileName = url.substring( url.lastIndexOf('/')+1, url.length());
+
+            URLConnection connection = urls.openConnection();
+            connection.connect();
+
+            int length=connection.getContentLength();
+
+            InputStream input = new BufferedInputStream(connection.getInputStream());
+
+            OutputStream output = new FileOutputStream(new File(file,fileName));
+            byte data[] = new byte[1024];
+            int total=0;
+            int count;
+            while ((count = input.read(data)) != -1) {
+                total+=count;
+                proscess =Integer.valueOf(total/length);
+                output.write(data, 0, count);
+            }
+            output.flush();
+            output.close();
+            input.close();
+            if(BuildConfig.DEBUG){
+                Util.messageDisplay("Download done.. :");
+            }
+        } catch (Exception e) {
+            if(BuildConfig.DEBUG){
+                Util.messageDisplay("Download error :"+e.getMessage());
+            }
+        }
     }
 
+    public static void socket(){
 
+    }
 
 }

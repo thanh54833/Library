@@ -8,10 +8,7 @@ import com.example.mylibrary.Converter;
 import com.example.mylibrary.Parses;
 import com.example.mylibrary.Util;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-public class MainActivity extends AppCompatActivity {
+public class BackupAndRecovery extends AppCompatActivity {
 
     private Button btnDownload;
     String URL = "https://imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg";
@@ -74,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
         parses.Close();
 
         Converter converter=new Converter(parses.getBuffer());
-        Util.messageDisplay("result :"+converter.byteToShort()+" +++ "+mShott);
-        Util.messageDisplay("result :"+converter.byteToInterger()+" +++ "+mInt);
-        Util.messageDisplay("result :"+converter.byteToLong()+" +++ "+mLong);
-        Util.messageDisplay("result :"+converter.byteToDouble()+" +++ "+mDouble);
-        Util.messageDisplay("result :"+converter.byteToString()+" +++ "+mString);
+        com.example.mylibrary.Util.messageDisplay("result :"+converter.byteToShort()+" +++ "+mShott);
+        com.example.mylibrary.Util.messageDisplay("result :"+converter.byteToInterger()+" +++ "+mInt);
+        com.example.mylibrary.Util.messageDisplay("result :"+converter.byteToLong()+" +++ "+mLong);
+        com.example.mylibrary.Util.messageDisplay("result :"+converter.byteToDouble()+" +++ "+mDouble);
+        com.example.mylibrary.Util.messageDisplay("result :"+converter.byteToString()+" +++ "+mString);
         Util.messageDisplay("result :"+new String(converter.byteToByte())+" +++ "+new String(mByte));
 
-        }
+    }
 
 
 }
