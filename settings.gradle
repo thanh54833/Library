@@ -1,1 +1,1 @@
-include ':app', ':mylibrary', ':laptopscreen'
+include ':app', ':mylibrary', ':laptopscreen', ':myapplication', ':appmovie'
