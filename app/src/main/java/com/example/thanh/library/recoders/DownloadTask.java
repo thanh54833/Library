@@ -1,4 +1,4 @@
-package com.example.thanh.library;
+package com.example.thanh.library.recoders;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.thanh.library.recoders.CheckForSDCard;
 
 import java.io.File;
 import java.io.FileOutputStream;

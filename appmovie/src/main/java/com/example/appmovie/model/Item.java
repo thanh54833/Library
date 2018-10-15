@@ -15,5 +15,11 @@ public class Item {
         this.message = message;
     }
 
+    @Override
+    public String toString() {
+        //return "Demo{" + "message='" + message + '\'' + '}';
+        return message;
+    }
+
 
 }

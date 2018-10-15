@@ -1,4 +1,4 @@
-package com.example.thanh.library;
+package com.example.thanh.library.recoders;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.widget.Button;
 import com.example.mylibrary.Converter;
 import com.example.mylibrary.Parses;
 import com.example.mylibrary.Util;
+import com.example.thanh.library.R;
 
 public class BackupAndRecovery extends AppCompatActivity {
 

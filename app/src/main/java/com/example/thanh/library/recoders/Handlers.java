@@ -1,4 +1,4 @@
-package com.example.thanh.library;
+package com.example.thanh.library.recoders;
 
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.example.mylibrary.Util;
+import com.example.thanh.library.BuildConfig;
+import com.example.thanh.library.R;
 
 public class Handlers extends AppCompatActivity implements View.OnClickListener{
     private TextView textView;
