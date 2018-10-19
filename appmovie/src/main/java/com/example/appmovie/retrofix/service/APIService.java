@@ -13,7 +13,10 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 
 public interface APIService {
-    @GET("getallproducts.php")
+
+
+
+    @GET("list")
     Call<List<Products>> getAllProduct();
 
     //@POST("movie/list")

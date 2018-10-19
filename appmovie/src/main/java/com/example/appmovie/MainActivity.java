@@ -8,7 +8,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.appmovie.model.Item;
+import com.example.appmovie.presenter.ILoginPresenter;
 import com.example.appmovie.presenter.MainPresenter;
+import com.example.appmovie.presenter.loginPersenter;
 import com.example.appmovie.retrofix.model.Products;
 import com.example.appmovie.retrofix.service.APIService;
 import com.example.appmovie.retrofix.service.TokenRequest;
@@ -29,48 +31,46 @@ public class MainActivity extends AppCompatActivity  implements ILoginView ,List
     private ListView listView;
 
     String TAG ="com.example.appmovie";
-    String URL_GET_PRODUCT = "http://dev.androidcoban.com/blog/";
+    String URL_GET_PRODUCT = "http://training-movie.bsp.vn:82/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       /* tring mail="pham54833@gmail.com";
+        /*String mail="pham54833@gmail.com";
         String pass="Lumia520";
         ILoginPresenter iLoginPresenter=new loginPersenter(this);
-        iLoginPresenter.onLogin(mail,pass);*/
+        iLoginPresenter.onLogin(mail,pass);
 
-       /*listView=findViewById(R.id.list_view);
+       listView=findViewById(R.id.list_view);
        mainPresenter = new MainPresenter(this);
        int flag=0;
        if(flag==0){
-
            mainPresenter.loadData();
+       }
+       */
 
-       }*/
        getAllProduct();
     }
     private void getAllProduct() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL_GET_PRODUCT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://training-movie.bsp.vn:82/movie/").addConverterFactory(GsonConverterFactory.create()).build();
+
         APIService apiService = retrofit.create(APIService.class);
 
         TokenRequest tokenRequest=new TokenRequest();
         tokenRequest.setApp_token("dCuW7UQMbdvpcBDfzolAOSGFIcAec11a");
 
+        //Call<List<Products>> call = apiService.getAllProduct();
+
         Call<List<Products>> call = apiService.getAllProduct();
-        //Call<List<Products>> call = apiService.getAllProduct(tokenRequest);
 
         Toast.makeText(getApplicationContext(),"start retrofix ...",Toast.LENGTH_SHORT).show();
 
         call.enqueue(new Callback<List<Products>>() {
             @Override
             public void onResponse(Response<List<Products>> response, Retrofit retrofit) {
-
                 List<Products> productsList = response.body();
                 //String string=productsList
                /* for (int i = 0; i<productsList.size() ; i++) {
@@ -83,10 +83,9 @@ public class MainActivity extends AppCompatActivity  implements ILoginView ,List
                 //Log.d("com.example.appmovie", productsList.get(1).getProductName());
                 //Toast.makeText(getApplicationContext(),"result :"+productsList.get(1).getProductName(),Toast.LENGTH_SHORT).show();
 
-                for(int i=0;i<productsList.size();i++){
+                /*for(int i=0;i<productsList.size();i++){
                     Log.d("thegioicuathanh","---"+productsList.get(i).getProductName());
-                }
-
+                }*/
                 Toast.makeText(getApplicationContext(),"lenght :"+productsList.size(),Toast.LENGTH_SHORT).show();
 
             }

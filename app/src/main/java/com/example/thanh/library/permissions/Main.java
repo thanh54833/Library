@@ -65,9 +65,15 @@ public class Main extends AppCompatActivity {
         mBtnDoTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     checkPermission();
                 }
+
+
+
             }
         });
     }

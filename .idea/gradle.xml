@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/laptopscreen" />
             <option value="$PROJECT_DIR$/myapplication" />
             <option value="$PROJECT_DIR$/mylibrary" />
+            <option value="$PROJECT_DIR$/testmovie" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

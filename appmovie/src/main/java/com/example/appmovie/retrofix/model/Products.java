@@ -5,7 +5,18 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public  class Products implements Serializable {
-    @SerializedName("id_product")
+
+    @SerializedName("error")
+    private  String error;
+
+    @SerializedName("code")
+    private  String code;
+
+    @SerializedName("message")
+    private  String message;
+
+
+   /* @SerializedName("id_product")
     private  int idProduct;
     @SerializedName("product_name")
     private  String productName;
@@ -14,9 +25,9 @@ public  class Products implements Serializable {
     @SerializedName("price")
     private  String price;
     @SerializedName("thumnail")
-    private  String thumnail;
+    private  String thumnail;*/
 
-    public int getIdProduct() {
+    /*public int getIdProduct() {
         return idProduct;
     }
 
@@ -54,5 +65,5 @@ public  class Products implements Serializable {
 
     public void setThumnail(String thumnail) {
         this.thumnail = thumnail;
-    }
+    }*/
 }
